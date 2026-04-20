@@ -1,352 +1,261 @@
-# Telegram File Uploader Bot
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python Version">
+  <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/Telegram-Bot-orange?style=for-the-badge&logo=telegram" alt="Telegram Bot">
+  <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge" alt="Status">
+</p>
 
-A safe and legitimate Telegram bot for handling user files. This bot demonstrates proper file handling practices using the official Telegram Bot API.
+<h1 align="center">🤖 Telegram File Uploader Bot</h1>
 
-## Features
+<p align="center">
+  <strong>A professional, secure, and versatile Telegram bot for safe file handling</strong>
+</p>
 
-- ✅ Safe file handling with automatic cleanup
-- 📁 Supports documents, photos, audio, voice messages, and videos
-- 🔒 Uses official Telegram Bot API
-- 🚀 Easy deployment on VPS, Heroku, and Google Colab
-- 📝 Comprehensive logging
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#deployment">Deployment</a> •
+  <a href="#configuration">Configuration</a> •
+  <a href="#security">Security</a> •
+  <a href="#troubleshooting">Troubleshooting</a>
+</p>
 
-## Prerequisites
+---
 
-- Python 3.8+
-- A Telegram Bot Token (get from [@BotFather](https://t.me/BotFather))
+## ✨ Features
 
-## Getting Your Bot Token
+| Feature | Description |
+|---------|-------------|
+| 📁 **Multi-Format Support** | Documents, Photos, Audio, Voice Messages, Videos |
+| 🔒 **Secure Handling** | Automatic file cleanup and secure temporary storage |
+| 🚀 **Multi-Platform** | Deploy on VPS, Heroku, Google Colab, or Docker |
+| 📊 **Detailed Logging** | Comprehensive logs for monitoring and debugging |
+| ⚡ **High Performance** | Async operations for efficient file processing |
+| 🛡️ **Official API** | Built with python-telegram-bot using official Telegram Bot API |
+
+---
+
+## 🚀 Quick Start
+
+### 1. Get Your Bot Token
+
+<details>
+<summary>Click to expand instructions</summary>
 
 1. Open Telegram and search for [@BotFather](https://t.me/BotFather)
 2. Send `/newbot` command
-3. Follow the instructions to create your bot
-4. Copy the API token provided
+3. Choose a name and username for your bot
+4. Copy the API token provided (looks like: `1234567890:ABCdefGHIjklMNOpqrsTUVwxyz`)
 
-## Installation
+</details>
 
-### Clone the Repository
-
-```bash
-git clone <your-repo-url>
-cd <repository-name>
-```
-
-### Install Dependencies
+### 2. Install & Run
 
 ```bash
+# Clone the repository
+git clone https://github.com/cloocloo77/tele.git
+cd tele
+
+# Install dependencies
 pip install -r requirements.txt
-```
 
-### Set Environment Variable
-
-```bash
+# Set your bot token
 export TELEGRAM_BOT_TOKEN="your_bot_token_here"
-```
 
-## Usage
-
-Run the bot:
-
-```bash
+# Run the bot
 python bot.py
 ```
 
-### Commands
+---
 
-- `/start` - Start the bot and see welcome message
-- `/help` - Display help information
+## 🌐 Deployment
 
-Simply send any file to the bot and it will process it safely and send it back.
+<details open>
+<summary><h3>🖥️ Option 1: VPS (Ubuntu/Debian) - Recommended for 24/7</h3></summary>
 
-## Deployment Guide
-
-### Option 1: VPS Deployment (Ubuntu/Debian)
-
-#### 1. Update System Packages
+#### Step-by-Step Setup
 
 ```bash
+# 1. Update system
 sudo apt update && sudo apt upgrade -y
-```
 
-#### 2. Install Python and pip
-
-```bash
+# 2. Install Python & dependencies
 sudo apt install -y python3 python3-pip python3-venv git
-```
 
-#### 3. Clone Repository
-
-```bash
-git clone <your-repo-url>
-cd <repository-name>
-```
-
-#### 4. Create Virtual Environment
-
-```bash
+# 3. Clone and setup
+git clone https://github.com/cloocloo77/tele.git
+cd tele
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-```
 
-#### 5. Set Environment Variable
+# 4. Create environment file
+echo "TELEGRAM_BOT_TOKEN=your_token_here" > .env
 
-Create a `.env` file:
-
-```bash
-echo "TELEGRAM_BOT_TOKEN=your_bot_token_here" > .env
-```
-
-Or export it:
-
-```bash
-export TELEGRAM_BOT_TOKEN="your_bot_token_here"
-```
-
-#### 6. Create Systemd Service
-
-Create service file:
-
-```bash
-sudo nano /etc/systemd/system/telegram-bot.service
-```
-
-Add the following content:
-
-```ini
+# 5. Create systemd service
+sudo tee /etc/systemd/system/telegram-bot.service > /dev/null <<EOF
 [Unit]
 Description=Telegram File Uploader Bot
 After=network.target
 
 [Service]
 Type=simple
-User=your_username
-WorkingDirectory=/path/to/your/bot
-Environment="TELEGRAM_BOT_TOKEN=your_bot_token_here"
-ExecStart=/path/to/your/bot/venv/bin/python bot.py
+User=$USER
+WorkingDirectory=$(pwd)
+Environment="TELEGRAM_BOT_TOKEN=your_token_here"
+ExecStart=$(pwd)/venv/bin/python bot.py
 Restart=always
 RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
-```
+EOF
 
-Replace `your_username` and paths accordingly.
-
-#### 7. Enable and Start Service
-
-```bash
+# 6. Enable and start
 sudo systemctl daemon-reload
 sudo systemctl enable telegram-bot
 sudo systemctl start telegram-bot
-```
 
-#### 8. Check Status
-
-```bash
+# 7. Check status
 sudo systemctl status telegram-bot
 ```
 
-View logs:
+**Useful Commands:**
+- View logs: `sudo journalctl -u telegram-bot -f`
+- Stop bot: `sudo systemctl stop telegram-bot`
+- Restart bot: `sudo systemctl restart telegram-bot`
+
+</details>
+
+<details>
+<summary><h3>☁️ Option 2: Heroku - Cloud Platform</h3></summary>
+
+> ⚠️ **Note:** Heroku free tier discontinued. Paid plan required.
 
 ```bash
-sudo journalctl -u telegram-bot -f
-```
-
-### Option 2: Heroku Deployment
-
-#### 1. Install Heroku CLI
-
-Download from: https://devcenter.heroku.com/articles/heroku-cli
-
-#### 2. Login to Heroku
-
-```bash
+# 1. Login to Heroku
 heroku login
-```
 
-#### 3. Create Heroku App
-
-```bash
+# 2. Create app
 heroku create your-bot-name
-```
 
-#### 4. Create Procfile
+# 3. Set environment variable
+heroku config:set TELEGRAM_BOT_TOKEN=your_token_here
 
-Create a file named `Procfile` (no extension):
-
-```
-worker: python bot.py
-```
-
-#### 5. Create app.json (Optional)
-
-Create `app.json`:
-
-```json
-{
-  "name": "Telegram File Bot",
-  "description": "A safe Telegram file uploader bot",
-  "repository": "https://github.com/yourusername/your-repo",
-  "keywords": ["telegram", "bot", "python"],
-  "env": {
-    "TELEGRAM_BOT_TOKEN": {
-      "description": "Your Telegram Bot Token",
-      "required": true
-    }
-  },
-  "formation": {
-    "worker": {
-      "quantity": 1
-    }
-  }
-}
-```
-
-#### 6. Set Environment Variable
-
-```bash
-heroku config:set TELEGRAM_BOT_TOKEN=your_bot_token_here
-```
-
-#### 7. Deploy to Heroku
-
-```bash
-git add .
-git commit -m "Initial commit"
+# 4. Deploy
 git push heroku main
-```
 
-#### 8. Check Logs
+# 5. Scale worker
+heroku ps:scale worker=1
 
-```bash
+# 6. View logs
 heroku logs --tail
 ```
 
-#### 9. Scale Worker
+**Required Files:** `Procfile` and `app.json` are included in this repo.
 
-```bash
-heroku ps:scale worker=1
-```
+</details>
 
-**Note:** Heroku free tier has been discontinued. You'll need a paid plan.
+<details>
+<summary><h3>📓 Option 3: Google Colab - Testing Only</h3></summary>
 
-### Option 3: Google Colab (Temporary Testing)
-
-Google Colab is not designed for running bots 24/7, but you can use it for testing:
-
-#### 1. Open Google Colab
-
-Go to: https://colab.research.google.com
-
-#### 2. Create New Notebook
-
-#### 3. Clone Repository
+> ⚠️ **Warning:** Not for production. Session expires after ~12 hours.
 
 ```python
-!git clone <your-repo-url>
-%cd <repository-name>
-```
-
-#### 4. Install Dependencies
-
-```python
+# In Colab notebook cell 1
+!git clone https://github.com/cloocloo77/tele.git
+%cd tele
 !pip install -r requirements.txt
-```
 
-#### 5. Set Environment Variable
-
-```python
+# In cell 2
 import os
-os.environ['TELEGRAM_BOT_TOKEN'] = 'your_bot_token_here'
-```
+os.environ['TELEGRAM_BOT_TOKEN'] = 'your_token_here'
 
-#### 6. Run the Bot
-
-```python
+# In cell 3
 !python bot.py
 ```
 
-**Important:** The bot will stop when you close the Colab notebook or after ~12 hours of inactivity. Not suitable for production.
+</details>
 
-### Option 4: Docker Deployment
-
-#### 1. Create Dockerfile
-
-Create a `Dockerfile`:
-
-```dockerfile
-FROM python:3.11-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-ENV TELEGRAM_BOT_TOKEN=""
-
-CMD ["python", "bot.py"]
-```
-
-#### 2. Build Docker Image
+<details>
+<summary><h3>🐳 Option 4: Docker - Containerized</h3></summary>
 
 ```bash
+# Build image
 docker build -t telegram-bot .
-```
 
-#### 3. Run Container
-
-```bash
+# Run container
 docker run -d \
   --name telegram-bot \
-  -e TELEGRAM_BOT_TOKEN=your_bot_token_here \
+  -e TELEGRAM_BOT_TOKEN=your_token_here \
+  --restart unless-stopped \
   telegram-bot
-```
 
-#### 4. Check Logs
-
-```bash
+# View logs
 docker logs -f telegram-bot
 ```
 
-## Security Best Practices
+</details>
 
-1. **Never commit your bot token** to version control
-2. Use environment variables for sensitive data
-3. Keep dependencies updated
-4. Monitor bot logs regularly
-5. Implement rate limiting if needed
-6. Validate file types and sizes
+---
 
-## Troubleshooting
+## ⚙️ Configuration
 
-### Bot doesn't respond
+| Environment Variable | Required | Description | Example |
+|---------------------|----------|-------------|---------|
+| `TELEGRAM_BOT_TOKEN` | ✅ Yes | Your bot token from BotFather | `123456:ABC-DEF1234...` |
 
-- Check if `TELEGRAM_BOT_TOKEN` is set correctly
-- Verify the bot is not blocked by users
-- Check logs for errors
+---
 
-### Import errors
+## 🛡️ Security Best Practices
 
-- Ensure all dependencies are installed: `pip install -r requirements.txt`
-- Check Python version (3.8+)
+<div align="center">
 
-### Connection issues
+| ✅ Do | ❌ Don't |
+|-------|----------|
+| Use environment variables | Hardcode tokens in code |
+| Keep dependencies updated | Ignore security updates |
+| Monitor logs regularly | Share bot tokens publicly |
+| Validate file types | Allow unlimited file sizes |
+| Use HTTPS for webhooks | Use HTTP for sensitive data |
 
-- Check your internet connection
-- Verify firewall settings
-- Ensure Telegram API is accessible
+</div>
 
-## License
+---
 
-This project is licensed under the MIT License.
+## 🔧 Troubleshooting
 
-## Disclaimer
+| Issue | Solution |
+|-------|----------|
+| Bot doesn't respond | Verify token is correct and bot isn't blocked |
+| Import errors | Run `pip install -r requirements.txt` |
+| Connection timeout | Check firewall and internet connection |
+| Permission denied | Ensure execute permissions on scripts |
 
-This bot is designed for legitimate file handling purposes only. Users are responsible for ensuring they have the right to share any files they transmit through this bot. Do not use this bot to distribute copyrighted material without permission or for any illegal activities.
+**Enable Debug Mode:**
+```bash
+export PYTHONDEBUG=1
+python bot.py
+```
 
-## Support
+---
 
-For issues and questions, please open an issue on the GitHub repository.
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## ⚠️ Disclaimer
+
+> This bot is designed for **legitimate file handling purposes only**. Users are responsible for ensuring they have the right to share any files transmitted through this bot. Do not use this bot to distribute copyrighted material without permission or for any illegal activities.
+
+---
+
+<p align="center">
+  <strong>Made with ❤️ for the Telegram community</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/cloocloo77/tele/issues">Report Bug</a> •
+  <a href="https://github.com/cloocloo77/tele/issues">Request Feature</a> •
+  <a href="https://github.com/cloocloo77/tele">Star this Repo</a>
+</p>
